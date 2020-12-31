@@ -23,7 +23,7 @@ def setup(
   updater=None,
 ):
 
-  log = logger('sensorloop')
+  log = logger(append='sensorloop')
   state = getState()
   # Used to track when to send metrics to datadog
   agent = None
