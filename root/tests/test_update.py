@@ -32,12 +32,14 @@ def setupGithub(*args, **kargs):
   requests = MagicMock(name='requests')
   os = MagicMock(name='os')
   logger = MagicMock(name='logger')
-  io = lib.update.IO(os=os, requests=requests, logger=logger)
+  base64 = MagicMock(name='base64')
+  io = lib.update.IO(os=os, logger=logger)
   github = lib.update.GitHub(
     *args, **kargs,
     requests=requests,
     io=io,
     logger=logger,
+    base64=base64,
   )
 
   return {
@@ -67,7 +69,7 @@ def test_github_sha_callCorrectApiEndpoint():
   mocks['github'].sha()
   mocks['requests'].get.assert_has_calls(
     [
-      call.get('https://api.github.com/repos/smysnk/ota-test/commits?per_page=1&sha=edf', logger=ANY)
+      call.get('https://api.github.com/repos/smysnk/ota-test/commits?per_page=1&sha=edf', logger=ANY, headers=ANY)
     ]
   )
 
@@ -100,21 +102,21 @@ def test_github_update_shouldHandleValueError():
     ],
   ];
 
-  mocks['github'].download(sha='abc', destination='123')
+  mocks['github'].download(sha='abc', destination='123', base='raw')
   # print(mocks['io'].downloadFile.assert_called_with('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/README.md', '123/README.md'))
-  print(mocks['requests'].get.mock_calls)
+  # print(mocks['requests'].get.mock_calls)
   print(mocks['os'].mock_calls)
   mocks['requests'].get.assert_has_calls(
     [
-      call('https://api.github.com/repos/smysnk/ota-test/contents/?ref=abc', logger=ANY),
+      call('https://api.github.com/repos/smysnk/ota-test/contents/raw?ref=abc', logger=ANY, headers=ANY),
       call().json(),
-      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/README.md'),
+      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/README.md', logger=ANY, headers=ANY),
       call().save('123/README.md'),
-      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/README2.md'),
+      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/README2.md', logger=ANY, headers=ANY),
       call().save('123/README2.md'),
-      call('https://api.github.com/repos/smysnk/ota-test/contents/sub?ref=abc', logger=ANY),
+      call('https://api.github.com/repos/smysnk/ota-test/contents/raw/sub?ref=abc', logger=ANY, headers=ANY),
       call().json(),
-      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/sub/README.md'),
+      call('https://raw.githubusercontent.com/smysnk/ota-test/01f5e563ee8466b33fe7a9dbef2b9c7348b44e6d/sub/README.md', logger=ANY, headers=ANY),
       call().save('123/sub/README.md')
     ]
   )

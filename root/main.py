@@ -30,6 +30,6 @@ except Exception as e:
 
 try:
   import src.main
-  src.main.start(env=env, requests=lib.requests, logger=logger, time=t)
+  src.main.start(env=env, requests=lib.requests, logger=logger, time=t, updater=updater)
 except:
   print('Failed to start.')

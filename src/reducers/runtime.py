@@ -20,6 +20,7 @@ DEBUG = 'debug'
 LOG_INCLUDE = 'logInclude'
 LOG_EXCLUDE = 'logExclude'
 HTTP_TIMEOUT = 'httpTimeout'
+OTA_AUTO_UPDATE_INTERVAL = 'otaAutoUpdateInterval'
 
 class Runtime: 
   def __init__(self, env=None):
@@ -43,6 +44,7 @@ class Runtime:
       LOG_INCLUDE: env.settings[LOG_INCLUDE],
       LOG_EXCLUDE: env.settings[LOG_EXCLUDE],
       HTTP_TIMEOUT: env.settings[HTTP_TIMEOUT],
+      OTA_AUTO_UPDATE_INTERVAL: env.settings[OTA_AUTO_UPDATE_INTERVAL],
     }
 
   def __call__(self, state=None, action={}):

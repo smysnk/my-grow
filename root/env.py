@@ -15,6 +15,7 @@ settings = {
   'logExclude': ['reservoir:depth$', ':periodic$'], # regex
   'watchdog': True,
   'httpTimeout': 2, # seconds
+  'otaAutoUpdateInterval': 60 * 60,
 
   # Auto-Updating
   'githubRemote': 'https://github.com/smysnk/my-grow',

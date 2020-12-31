@@ -20,6 +20,7 @@ def setup(
   logger=None,
   watchdog=None,
   machine=None,
+  updater=None,
 ):
 
   log = logger('sensorloop')
@@ -205,6 +206,13 @@ def setup(
       series.add('eventloop', eventloop.EMERGENCY_SHUTOFF, eventloop.UPDATED_AT, state['eventloop'][eventloop.EMERGENCY_SHUTOFF][eventloop.UPDATED_AT])
 
       agent.submit(series)
+
+    # Reset the device if an update is available
+    if state['runtime'][runtime.OTA_AUTO_UPDATE_INTERVAL] and time.time() % state['runtime'][runtime.OTA_AUTO_UPDATE_INTERVAL] == 0:
+      try:
+        updater.checkForUpdate()
+      except Exception as e:
+        log('Failed to check for OTA update:', e)
 
     # Feed the watchdog so the system doesn't reset
     if watchdog:

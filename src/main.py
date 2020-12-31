@@ -9,7 +9,7 @@ from .lib import ws, datadog
 import onewire, ds18x20
 
 
-def start(env=None, requests=None, logger=None, time=None):
+def start(env=None, requests=None, logger=None, time=None, updater=None):
   log = logger('main')
   log("Starting..")
 
@@ -59,6 +59,7 @@ def start(env=None, requests=None, logger=None, time=None):
     logger=logger,
     watchdog=watchdog,
     machine=machine,
+    updater=updater,
   )
   timer = Timer(0)
   timer.init(period=1000, mode=Timer.PERIODIC, callback=tick)
