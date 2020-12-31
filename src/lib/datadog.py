@@ -26,7 +26,7 @@ class Agent:
       "DD-API-KEY": datadogApiKey,
       "DD-APPLICATION-KEY": datadogApplicationKey,
     }
-    self.log = logger('metrics:datadog:client')
+    self.log = logger(append='metrics:datadog')
 
   def submit(self, series):
     currentTime = self.time.time()
