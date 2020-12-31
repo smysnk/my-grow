@@ -10,7 +10,7 @@ import onewire, ds18x20
 
 
 def start(env=None, requests=None, logger=None, time=None, updater=None):
-  log = logger('main')
+  log = logger(append='main')
   log("Starting..")
 
   # Redux stuff
