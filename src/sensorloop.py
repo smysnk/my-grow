@@ -210,6 +210,7 @@ def setup(
     # Reset the device if an update is available
     if state['runtime'][runtime.OTA_AUTO_UPDATE_INTERVAL] and time.time() % state['runtime'][runtime.OTA_AUTO_UPDATE_INTERVAL] == 0:
       try:
+        gc.collect()
         updater.checkForUpdate()
       except Exception as e:
         log('Failed to check for OTA update:', e)
