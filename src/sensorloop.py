@@ -177,6 +177,11 @@ def setup(
       series.add('sensors', sensors.RESERVOIR, sensors.DEPTH, state['sensors'][sensors.RESERVOIR][sensors.DEPTH])
       series.add('sensors', sensors.PH, sensors.VALUE, state['sensors'][sensors.PH][sensors.VALUE])
       series.add('sensors', sensors.PH, sensors.UPDATED_AT, state['sensors'][sensors.PH][sensors.UPDATED_AT])
+      agent.submit(series)
+
+      # Split in two to avoid out of memory issues
+      gc.collect()
+      series = datadog.Series()
       series.add('runtime', runtime.CURRENT_TIME, state['runtime'][runtime.CURRENT_TIME])
       series.add('runtime', runtime.UPTIME, state['runtime'][runtime.UPTIME])
       series.add('runtime', runtime.MEMORY_FREE, state['runtime'][runtime.MEMORY_FREE])
